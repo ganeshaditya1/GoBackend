@@ -8,13 +8,20 @@
 # Create the directories needed for postgres
 export DATAPATH=/usr/local/PGData/GoBackend
 export LOGPATH=/var/local/log
-sudo mkdir -p $DATAPATH
-sudo mkdir -p $LOGPATH
-sudo chown postgres $DATAPATH
-sudo chown postgres $LOGPATH
+mkdir -p $DATAPATH
+mkdir -p $LOGPATH
+chown postgres $DATAPATH
+chown postgres $LOGPATH
 
-sudo -u postgres ./setup_dbs.sh
+sudo -u postgres ./db/setup_dbs.sh
 
-sudo -u postgres ./start_dbs.sh
+sudo -u postgres ./db/start_dbs.sh
 
-sudo ./create_tables.sh
+./db/create_tables.sh
+
+# This script expects 4 environment variables.
+# 1. AUTHSVC_PWORD
+# 2. AUTHSVC_ADMIN_PWORD
+# 3. DATASVC_SHARD1_PWORD
+# 4. DATASVC_SHARD2_PWORD
+./db/create_users.sh
