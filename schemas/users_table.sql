@@ -6,3 +6,7 @@ CREATE TABLE users (
     salt VARCHAR(255) NOT NULL,
     age INT CHECK (age >= 0)
 );
+
+CREATE TABLE admin (
+    userid INT REFERENCES users(userid)
+);
