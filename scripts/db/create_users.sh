@@ -20,13 +20,8 @@ if [ "x${DATASVC_SHARD2_PWORD}" == "x" ]; then
     exit 1
 fi
 
-psql -h localhost -U postgres -d postgres -p 5433 -c "CREATE USER authsvc WITH PASSWORD '${AUTHSVC_PWORD}'"
-psql -h localhost -U postgres -d postgres -p 5433 -c "CREATE USER authsvc_admin WITH PASSWORD '${AUTHSVC_ADMIN_PWORD}'"
+psql -h localhost -U postgres -p 5433 -c "CREATE USER authsvc WITH PASSWORD '${AUTHSVC_PWORD}'"
+psql -h localhost -U postgres -p 5433 -c "CREATE USER authsvc_admin WITH PASSWORD '${AUTHSVC_ADMIN_PWORD}'"
 
-psql -h localhost -U postgres -d postgres -p 5434 -c "CREATE USER datasvc_shard1 WITH PASSWORD '${DATASVC_SHARD1_PWORD}'"
-psql -h localhost -U postgres -d postgres -p 5435 -c "CREATE USER datasvc_shard2 WITH PASSWORD '${DATASVC_SHARD2_PWORD}'"
-
-psql -h localhost -U postgres -d postgres -p 5433 -c "GRANT SELECT, INSERT, UPDATE, DELETE on users to authsvc"
-psql -h localhost -U postgres -d postgres -p 5433 -c "GRANT SELECT, INSERT, UPDATE, DELETE on admin to authsvc_admin"
-psql -h localhost -U postgres -d postgres -p 5433 -c "REVOKE ALL PRIVILEGES on admin from authsvc"
-psql -h localhost -U postgres -d postgres -p 5433 -c "GRANT SELECT on admin to authsvc"
+psql -h localhost -U postgres -p 5434 -c "CREATE USER datasvc_shard1 WITH PASSWORD '${DATASVC_SHARD1_PWORD}'"
+psql -h localhost -U postgres -p 5435 -c "CREATE USER datasvc_shard2 WITH PASSWORD '${DATASVC_SHARD2_PWORD}'"

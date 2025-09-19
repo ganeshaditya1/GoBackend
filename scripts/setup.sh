@@ -17,11 +17,11 @@ sudo -u postgres ./db/setup_dbs.sh
 
 sudo -u postgres ./db/start_dbs.sh
 
-./db/create_tables.sh
-
 # This script expects 4 environment variables.
 # 1. AUTHSVC_PWORD
 # 2. AUTHSVC_ADMIN_PWORD
 # 3. DATASVC_SHARD1_PWORD
 # 4. DATASVC_SHARD2_PWORD
 ./db/create_users.sh
+
+./db/create_tables.sh
