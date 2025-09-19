@@ -1,0 +1,4 @@
+[database]
+dbname = "users"
+username = "authsvc"
+portno = 5433
