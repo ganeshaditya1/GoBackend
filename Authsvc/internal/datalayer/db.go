@@ -2,9 +2,9 @@ package datalayer
 
 import (
     "fmt"
-    "log"
+    "log/slog"
 	"os"
-    
+
     _ "github.com/lib/pq"
     "github.com/jmoiron/sqlx"
 )
@@ -15,7 +15,8 @@ func InitDB(dbname string, dbusername string,
 						  dbportno int) {
 	authsvc_pword := os.Getenv("AUTHSVC_PWORD")
 	if authsvc_pword == "" {
-		log.Fatalln("Postgres user Authsvc's password not specified.")
+		slog.Error("Postgres user Authsvc's password not specified.")
+		os.Exit(1)
 		return
 	}
 
@@ -23,7 +24,8 @@ func InitDB(dbname string, dbusername string,
 			fmt.Sprintf("user=%s dbname=%s password=%s port=%d sslmode=disable", 
 						dbusername, dbname, authsvc_pword, dbportno))
     if err != nil {
-        log.Fatalln(err)
+        slog.Error("Cannot connect to the DB.", err)
+		os.Exit(1)
 		return
     }
 	db = dbobj
@@ -32,8 +34,12 @@ func InitDB(dbname string, dbusername string,
 
 func GetDB() *sqlx.DB {
 	if db == nil {
-		log.Fatalln("DB not initialized yet.")
+		slog.Error("DB not initialized yet.")
 		return nil
 	}
 	return db
+}
+
+func SetDB(dbobj *sqlx.DB) {
+	db = dbobj
 }
