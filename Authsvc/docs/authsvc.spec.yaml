@@ -1,0 +1,177 @@
+openapi: 3.0.0
+info:
+  title: User Management API
+  version: 1.0.0
+  description: API for managing users, including creating and logging in users.
+
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "john_doe"
+                  x-oapi-codegen-extra-tags: 
+                    validate: required
+                password:
+                  type: string
+                  example: "securePassword123"
+                  x-oapi-codegen-extra-tags: 
+                    validate: required
+                email:
+                  type: string
+                  format: email
+                  example: "john.doe@example.com"
+                  x-oapi-codegen-extra-tags: 
+                    validate: "required,email"
+                age:
+                  type: integer
+                  example: 30
+                  x-oapi-codegen-extra-tags: 
+                    validate: "required,min=18,lte=99"
+              required:
+                - username
+                - password
+                - email
+                - age
+      responses:
+        '201':
+          $ref: '#/components/responses/UserCreated'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /login:
+    post:
+      summary: Log in a user
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "john_doe"
+                  x-oapi-codegen-extra-tags: 
+                    validate: required
+                password:
+                  type: string
+                  example: "securePassword123"
+                  x-oapi-codegen-extra-tags: 
+                    validate: required
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          $ref: '#/components/responses/LoginSuccessful'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /decode-usertoken:
+    post:
+      summary: Validate and decode JWT token
+      operationId: decodeUserToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+              properties:
+                token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1Ni..."
+      responses:
+        '200':
+          description: Token is valid, user details successfully extracted.
+          $ref: '#/components/responses/ValidToken'
+        '403':
+          description: Token is invalid
+          $ref: '#/components/responses/InvalidToken'
+components:
+  responses:
+    UserCreated:
+      description: User created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "User created successfully"
+              userId:
+                type: string
+                example: "12345"
+    Conflict:
+      description: Conflict - Username or email already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Username or email already exists"
+    LoginSuccessful:
+      description: Login successful
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Login successful"
+              token:
+                type: string
+                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid username or password"
+    ValidToken:
+      description: Decoded user token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                example: "JohnDoe123"
+              userid:
+                type: integer
+                example: 123
+              emailid:
+                type: string
+                format: email
+                example: "John_Doe@gmail.com"
+              isadmin:
+                type: boolean
+                example: True
+    InvalidToken:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Token is invalid."
+securitySchemes: {}
