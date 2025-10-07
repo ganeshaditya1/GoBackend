@@ -23,7 +23,8 @@ func TestShouldCreateUser(t *testing.T) {
 		WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 
-	CreateUser("John", "JohnDoe@gmail.com", "Password", 45)
+	user := NewUser("John", "JohnDoe@gmail.com", "Password", 45)
+	CreateUser(user)
 }
 
 func TestShouldLoginAdminUser(t *testing.T) {

@@ -24,7 +24,7 @@ func InitDB(dbname string, dbusername string,
 			fmt.Sprintf("user=%s dbname=%s password=%s port=%d sslmode=disable", 
 						dbusername, dbname, authsvc_pword, dbportno))
     if err != nil {
-        slog.Error("Cannot connect to the DB.", err)
+        slog.Error("Cannot connect to the DB.", "error", err)
 		os.Exit(1)
 		return
     }
