@@ -17,9 +17,14 @@ type appconfig struct {
 	Logfile string `mapstructure:"APP_LOGFILE"`
 }
 
+type svcconfig struct {
+	AllowedOrigins string `mapstructure:"SVC_ALLOWED_ORIGINS"`
+}
+
 type Configuration struct {
 	DBConfig dbconfig `mapstructure:",squash"`
 	AppConfig appconfig `mapstructure:",squash"`
+	SvcConfig svcconfig `mapstructure:",squash"`
 }
 
 var Config *Configuration
