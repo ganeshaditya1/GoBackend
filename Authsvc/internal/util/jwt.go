@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"log/slog"
+	"strconv"
 	"time"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -38,7 +39,7 @@ func NewJWTUserClaims(userid int, username string,
 		emailaddress,
 		jwt.RegisteredClaims {
 			Issuer: "authsvc",
-			Subject: string(userid),
+			Subject: strconv.Itoa(userid),
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(72 * time.Hour)), // 3 days
 			IssuedAt: jwt.NewNumericDate(time.Now()),
 		},
@@ -52,7 +53,7 @@ func (jwtHandler JWTHandler) GenerateToken(userClaims JWTUserClaims) string {
 	// Sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString(jwtHandler.secretKey)
 	if err != nil {
-		slog.Error("Failed to produce a tokenString", err.Error())
+		slog.Error("Failed to produce a tokenString", "err", err.Error())
 	}
 	return tokenString
 }
