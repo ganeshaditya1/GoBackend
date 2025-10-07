@@ -20,5 +20,5 @@ createdb -h localhost -U datasvc_shard2 -p 5435  data_shard
 psql -h localhost -U postgres -p 5435 -c "ALTER USER datasvc_shard2 nocreatedb"
 
 psql -h localhost -U datasvc_shard1 -d data_shard -p 5434 -f "../schemas/data_table.sql"
-psql -h localhost -U datasvc_shard2 -d data_shard -p 5435 -f "../schemas/data_table.sql"
+psql -h localhost -U datasvc_shard2 -d data_shard -p 5435 -f "../schemas/data_table2.sql"
 
