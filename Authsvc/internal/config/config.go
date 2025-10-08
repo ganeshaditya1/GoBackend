@@ -19,6 +19,7 @@ type appconfig struct {
 
 type svcconfig struct {
 	AllowedOrigins string `mapstructure:"SVC_ALLOWED_ORIGINS"`
+	PortNo int `mapstructure:"SVC_PORTNO"`
 }
 
 type Configuration struct {
@@ -45,5 +46,4 @@ func InitConfig() {
     }
 
     Config = configuration
-	fmt.Println(Config.DBConfig.DBname)
 }

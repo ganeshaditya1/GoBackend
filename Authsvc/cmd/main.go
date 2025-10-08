@@ -31,7 +31,7 @@ func start_server() {
 
 	s := &http.Server{
 		Handler: h,
-		Addr:    "0.0.0.0:8080",
+		Addr:    fmt.Sprintf("0.0.0.0:%d", Config.SvcConfig.PortNo)
 	}
 
 	// And we serve HTTP until the world ends.
@@ -50,11 +50,4 @@ func main() {
 
 	fmt.Println("Started Server")
 	start_server()
-
-
-	//err := datalayer.CreateUser("Hello", "Hello@gmail.com", "World", 69)
-	//fmt.Println(err)
-
-	//user, err := datalayer.LoginUser("Hello", "World")
-	//fmt.Println(user, err)
 }
