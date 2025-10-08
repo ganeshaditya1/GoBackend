@@ -49,11 +49,4 @@ func main() {
 
 	fmt.Println("Started Server")
 	start_server()
-
-
-	//err := datalayer.CreateUser("Hello", "Hello@gmail.com", "World", 69)
-	//fmt.Println(err)
-
-	//user, err := datalayer.LoginUser("Hello", "World")
-	//fmt.Println(user, err)
 }
