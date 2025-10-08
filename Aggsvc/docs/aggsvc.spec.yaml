@@ -1,0 +1,153 @@
+openapi: "3.0.3"
+info:
+  title: Book Service API
+  version: "1.0.0"
+  description: Simple API to create, remove, and search books.
+servers:
+  - url: https://api.example.com
+paths:
+  /books:
+    post:
+      summary: Create a book
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookRequest'
+      responses:
+        "201":
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+  /books/{id}:
+    delete:
+      summary: Remove a book
+      operationId: removeBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the book to remove
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContent'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+  /books/search:
+    get:
+      summary: Search books by name
+      operationId: searchBooks
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Name (or partial name) to search for
+      responses:
+        "200":
+          description: A collection of books matching the query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookCollection'    
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    CreateBookRequest:
+      type: object
+      required:
+        - book_name
+        - book_description
+      properties:
+        book_name:
+          type: string
+          description: Title of the book
+          example: "The Go Programming Language"
+        book_description:
+          type: string
+          description: Short description of the book
+          example: "An introduction to Go."
+    Book:
+      type: object
+      required:
+        - bookid
+        - bookname
+        - bookdescription
+      properties:
+        bookid:
+          type: integer
+          format: int64
+          example: 123
+        bookname:
+          type: string
+          example: "The Go Programming Language"
+        bookdescription:
+          type: string
+          example: "An introduction to Go."
+    BookCollection:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+  responses:
+    BadRequest:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "invalid request"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "book not found"
+    NoContent:
+      description: No content
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "internal server error"
+    Forbidden:
+      description: Forbidden
