@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/ganeshaditya1/GoBackend/Datasvc/internal/datalayer"
 	"log/slog"
 )

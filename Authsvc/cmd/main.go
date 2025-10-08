@@ -31,7 +31,7 @@ func start_server() {
 
 	s := &http.Server{
 		Handler: h,
-		Addr:    fmt.Sprintf("0.0.0.0:%d", Config.SvcConfig.PortNo)
+		Addr:    fmt.Sprintf("0.0.0.0:%d", Config.SvcConfig.PortNo),
 	}
 
 	// And we serve HTTP until the world ends.
